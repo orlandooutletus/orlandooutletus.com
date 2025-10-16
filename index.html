@@ -1,152 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ORLANDO OUTLET — Yeni Nesil Alış Veriş Deneyimi</title>
-
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORLANDO OUTLET</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#f1f1f1; --white:#fff; --black:#000; --text:#121212; --muted:#6b7280;
-      --radius:18px; --shadow:0 10px 28px rgba(0,0,0,.08); --accent:#f6c32e;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:"Prompt",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:var(--bg)}
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
-    .container{max-width:1120px;margin:0 auto;padding:24px}
-
-    /* ------------- HERO (tam ekran) ------------- */
-    .hero-wrap{
-      min-height:100vh; width:100vw;
-      margin-left:50%; transform:translateX(-50%);
-      position:relative; display:grid; align-items:center;
-    }
-    .hero-bg{position:absolute; inset:0; background:url("hero.jpg") center/cover no-repeat; filter:contrast(1.03) saturate(1.02); z-index:0;}
-    .hero-overlay{position:absolute; inset:0; background:linear-gradient(to bottom, rgba(255,255,255,.06) 0%, rgba(255,255,255,.48) 70%, #fff 100%); z-index:1;}
-    .hero{position:relative; z-index:2;}
-    .hero .inner{
-      max-width:1120px; margin:0 auto; padding:24px;
-      text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:12px;
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background-color: #f4f4f4;
+      color: #111;
     }
 
-    /* Başlık bloğu artık hero içinde */
-    .brand-mark{width:48px;height:48px;border-radius:999px;background:#111 url("logo.png") center/70% no-repeat; box-shadow:var(--shadow);}
-    .site-title{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:.02em;}
-    .site-pill{display:inline-block;padding:10px 18px;background:#111;color:#fff;border-radius:999px;font-weight:700;box-shadow:var(--shadow);}
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      height: 100vh; /* Tam sayfa */
+      background: url('hero.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Üst hizalama */
+      align-items: center;
+      text-align: center;
+      padding-top: 10vh; /* Gökyüzüne taşıyoruz */
+      box-sizing: border-box;
+    }
 
-    .eyebrow{display:inline-block; letter-spacing:.25em; text-transform:uppercase; color:var(--accent)!important; font-weight:600; font-size:.95rem; margin-top:8px;}
-    .hero h1{margin:.2rem 0 .6rem; line-height:1.05; font-weight:800; font-size:clamp(28px,5vw,56px); text-shadow:0 1px 3px rgba(0,0,0,.12);}
-    .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:6px 0 8px;}
-    .btn{padding:12px 18px; border-radius:999px; font-weight:700; box-shadow:var(--shadow); background:#fff; border:1px solid #e5e7eb;}
-    .btn.primary{background:#111; color:#fff; border-color:#111}
-    .lede{max-width:900px; margin:6px auto 0; font-size:clamp(15px,2vw,18px); color:#374351;}
+    .hero-content {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 20px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-    /* GRID (yerinde kalsın) */
-    .section-title{text-align:center;font-size:clamp(22px,3vw,32px);margin:48px 0 20px;font-weight:800;letter-spacing:.01em}
-    .grid{display:grid; gap:22px; grid-template-columns:repeat(4,minmax(0,1fr))}
-    @media (max-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
-    @media (max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:480px){.grid{grid-template-columns:1fr}}
+    .hero-logo {
+      width: 70px;
+      margin-bottom: 10px;
+    }
 
-    .card{background:#fff;border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
-    .card .media{background:#111;height:180px;display:grid;place-items:center}
-    .card .media img{width:88px;opacity:.9}
-    .card .body{padding:18px}
-    .title{font-weight:800;margin-bottom:6px}
-    .specs{color:#334155}
-    .price{margin:10px 0 14px;font-weight:800}
-    .actions{display:flex;gap:10px}
-    .chip{padding:10px 14px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
-    .chip.fill{background:#111;color:#fff;border-color:#111}
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 700;
+      margin: 0;
+    }
 
-    /* FOOTER */
-    footer{background:#eaeaea;margin-top:52px}
-    .foot{max-width:1120px;margin:0 auto;padding:28px 24px}
-    .foot h3{text-align:center;margin:0 0 18px;font-weight:800}
-    .foot .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-    .foot p{margin:0;color:#334155;text-align:center}
-    .foot .copy{margin-top:18px;text-align:center;color:#374151}
+    .hero .subtitle {
+      background: #000;
+      color: #fff;
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-top: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      color: #f6c32e;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      font-size: clamp(22px, 4vw, 40px);
+      font-weight: 700;
+      margin: 0 0 16px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+    }
+
+    .btn-dark {
+      background: #000;
+      color: #fff;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: #000;
+      border: 1px solid #ccc;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: 10px auto;
+      color: #222;
+    }
+
+    .hero p strong {
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
 
-  <!-- HERO (artık başlık bloğu da içinde) -->
-  <section class="hero-wrap">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="Sop now svg ORLANDO WEB.svg" alt="Logo" class="hero-logo">
+      <h1>ORLANDO OUTLET</h1>
+      <div class="subtitle">Yeni Nesil Alış Veriş Deneyimi</div>
+      <div class="eyebrow">LIVE FROM ORLANDO PREMIUM OUTLETS</div>
+      <h2>Hızlı, Güvenli, Canlı Yayında Alışveriş</h2>
 
-    <div class="hero">
-      <div class="inner">
-        <!-- Üst başlık -->
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="site-title">ORLANDO OUTLET</div>
-        <div class="site-pill">Yeni Nesil Alış Veriş Deneyimi</div>
-
-        <!-- Hero metinleri -->
-        <span class="eyebrow">LIVE FROM ORLANDO PREMIUM OUTLETS</span>
-
-        <h1>Hızlı, Güvenli, Canlı Yayında Alışveriş</h1>
-
-        <div class="cta-row">
-          <a class="btn primary" href="https://instagram.com/orlandooutlet" target="_blank" rel="noopener">Instagram DM’den Yaz</a>
-          <a class="btn" href="mailto:info@orlandooutletus.com">info@orlandooutletus.com</a>
-          <a class="btn" href="#grid">Ürünleri Gör</a>
-        </div>
-
-        <!-- İstenen şekilde: “hemen satın alalım” bold değil, sonraki cümle bold + alt satır -->
-        <p class="lede">
-          Ürünü seç, Stripe güvenli ödeme linkiyle öde; hemen satın alalım.<br>
-          <strong>10–15 günde Türkiye Kapı Teslim.</strong> Stok tutmuyoruz — anlık fırsatlarla çalışıyoruz.
-        </p>
+      <div class="buttons">
+        <a href="https://instagram.com/orlandooutlet" target="_blank" class="btn-dark">Instagram DM’den Yaz</a>
+        <a href="mailto:info@orlandooutletus.com" class="btn-light">info@orlandooutletus.com</a>
+        <a href="#" class="btn-light">Ürünleri Gör</a>
       </div>
+
+      <p>Ürünü seç, Stripe güvenli ödeme linkiyle öde; hemen satın alalım.<br>
+      <strong>10–15 günde Türkiye Kapı Teslim.</strong> Stok tutmuyoruz — anlık fırsatlarla çalışıyoruz.</p>
     </div>
   </section>
-
-  <!-- GÜNÜN FIRSATLARI -->
-  <main class="container">
-    <h2 class="section-title">Günün Fırsatları</h2>
-
-    <section id="grid" class="grid" aria-label="Ürün listesi">
-      <!-- 12 placeholder kart -->
-      <article class="card"><div class="media"><img src="logo.png" alt="Logo"></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-      <article class="card"><div class="media"><img src="logo.png" alt=""></div><div class="body"><div class="title">Marka — Model</div><div class="specs"><span><strong>Beden:</strong> —</span> &nbsp; <span><strong>Renk:</strong> —</span></div><div class="specs"><strong>Açıklama:</strong> —</div><div class="price">₺ —</div><div class="actions"><button class="chip">Sepete Ekle</button><button class="chip fill">Hemen Satın Al</button></div></div></article>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="foot">
-      <h3>Önemli Bilgilendirme</h3>
-      <div class="cols">
-        <p><strong>İade / Değişim</strong><br/>İade ve değişim yoktur. Satın alma öncesi fiyat/ölçü/renk teyidi DM’den yapılır.</p>
-        <p><strong>Gizlilik</strong><br/>Ödemeler Stripe ile güvenli şekilde alınır. Kişisel veriler yalnızca sipariş ve teslimat için kullanılır.</p>
-        <p><strong>Gönderim</strong><br/>Ortalama teslimat süresi 10–15 gündür.</p>
-      </div>
-      <p class="copy">
-        Instagram: <a href="https://instagram.com/orlandooutlet" target="_blank" rel="noopener">@orlandooutlet</a>
-        <br/>© ORLANDOOUTLET — Orlando, FL · Türkiye’ye 10–15 günde teslim ·
-        <a href="#">İade/Değişim Yoktur</a> · <a href="#">Gizlilik</a> · <a href="#">Çerezler</a>
-      </p>
-    </div>
-  </footer>
 
 </body>
 </html>
