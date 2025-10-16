@@ -34,13 +34,11 @@
     .hero-wrap{
       min-height:100vh; width:100vw; margin-left:50%; transform:translateX(-50%);
       position:relative; display:grid;
-      /* üst 1/3 + alt 2/3 bölgesi; metinler üst bölgede */
-      grid-template-rows: 1fr 2fr;
+      grid-template-rows: 1fr 2fr; /* üst 1/3'te içerik */
       padding-top:clamp(12px, 2vh, 24px);
     }
     .hero-bg{
       position:absolute; inset:0;
-      /* Dosya adı boşluk ve 'ı' içeriyor: URL-encode kullanıyoruz */
       background:url("bebek%20arabal%C4%B1%20hero.JPG") center top/cover no-repeat;
       filter:contrast(1.03) saturate(1.02);
       z-index:0;
@@ -89,7 +87,7 @@
     @media (max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:520px){.grid{grid-template-columns:1fr}}
 
-    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative}
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
     .card .media{background:#111;aspect-ratio:1/1;display:grid;place-items:center}
     .card .media img{width:100%;height:100%;object-fit:cover}
     .card .body{padding:16px 16px 18px}
@@ -99,8 +97,6 @@
     .actions{display:flex;gap:10px}
     .chip{padding:10px 14px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer}
     .chip.fill{background:#111;color:#fff;border-color:#111}
-    .card a.buy{position:absolute;inset:0;opacity:0;transition:.2s;background:rgba(0,0,0,.0)}
-    .card:hover a.buy{opacity:1;background:rgba(0,0,0,.06)}
 
     /* ------------- BRANDS ------------- */
     .brands{background:#fff;border:1px solid #eee;border-radius:18px;padding:14px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
@@ -118,7 +114,7 @@
 </head>
 <body>
 
-  <!-- HERO (metinler üst 1/3 dilimde, çatıya değmez) -->
+  <!-- HERO -->
   <section class="hero-wrap" aria-label="Tanıtım">
     <div class="hero-bg" id="heroParallax"></div>
 
@@ -222,7 +218,8 @@
       return rows.map(cols=>{ const o={}; header.forEach((h,i)=>o[h]=cols[i]||''); return o; });
     }
 
-    /* Kart şablonu: DM → Instagram, Satın Al → Stripe */
+    /* Kart şablonu: DM → Instagram, Satın Al → Stripe.
+       (Tam ekran tıklama katmanı kaldırıldı) */
     function cardTemplate(item){
       const title = item.title || '—';
       const brand = item.brand || '';
@@ -242,7 +239,6 @@
               <a class="chip fill" href="${link}" target="_blank" rel="noopener" aria-label="${title} için Stripe ile satın al">Hemen Satın Al</a>
             </div>
           </div>
-          <a class="buy" href="${link}" target="_blank" rel="noopener" aria-label="${title} satın al"></a>
         </article>
       `;
     }
