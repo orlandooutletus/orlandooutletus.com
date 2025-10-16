@@ -9,8 +9,8 @@
   <meta name="description" content="Instagram’daki anlık outlet fırsatlarını tek sayfada listeleyip Stripe ile güvenli ödeme alın. ABD→Türkiye 10–15 günde kapı teslim." />
   <meta property="og:title" content="ORLANDO OUTLET — Yeni Nesil Alışveriş Deneyimi" />
   <meta property="og:description" content="Gerçek zamanlı outlet fırsatları. Stripe ile ödeme, Türkiye’ye 10–15 gün teslim." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/hero.jpg.JPG" />
+  <!-- ÖNEMLİ: dosya adı boşluk ve ı içerdiği için URL-encode'lu yazıldı -->
+  <meta property="og:image" content="/bebek%20arabal%C4%B1%20hero.JPG" />
   <meta name="theme-color" content="#111111" />
 
   <!-- Font -->
@@ -33,28 +33,27 @@
     /* ------------- HERO ------------- */
     .hero-wrap{
       min-height:100vh;width:100vw;margin-left:50%;transform:translateX(-50%);
-      position:relative;display:grid;align-items:flex-start; /* içeriği yukarı al */
+      position:relative;display:grid;align-items:flex-start;
     }
+    /* Hero arka plan GÖRSELİ — dosya adındaki boşluk ve 'ı' karakteri URL-encode edildi */
     .hero-bg{
       position:absolute;inset:0;
-      background:url("hero.jpg.JPG") center/cover no-repeat;
+      background:url("bebek%20arabal%C4%B1%20hero.JPG") center top/cover no-repeat;
       filter:contrast(1.03) saturate(1.02);
       z-index:0;
     }
-    /* overlay TAMAMEN kaldırıldı */
+    /* Overlay yok */
 
     .hero{position:relative;z-index:2;}
     .hero .inner{
       max-width:var(--maxw);margin:0 auto;padding:24px;
       text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;
-      /* Gökyüzüne yerleştir: üstten boşluk */
       padding-top:clamp(40px, 14vh, 160px);
       padding-bottom:clamp(20px, 10vh, 120px);
     }
     .brand-mark{width:48px;height:48px;border-radius:999px;background:#111 url("logo.png") center/70% no-repeat; box-shadow:var(--shadow);}
     .site-title{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:.02em;}
     .site-pill{display:inline-block;padding:10px 18px;background:#111;color:#fff;border-radius:999px;font-weight:700;box-shadow:var(--shadow);}
-    /* Eyebrow: cam görünümlü pill (okunurluk için) */
     .eyebrow{
       color:#fff !important;background:rgba(0,0,0,.45);
       padding:6px 10px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);
@@ -66,7 +65,7 @@
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:#111;color:#fff;border-color:#111}
 
-    /* Açıklama: siyah metin + çok hafif cam plaka (fotoğrafı kapatmaz) */
+    /* Açıklama */
     .lede{
       color:#111;text-shadow:0 1px 0 rgba(255,255,255,.28);
       background:rgba(255,255,255,.52); backdrop-filter:blur(1.5px);
