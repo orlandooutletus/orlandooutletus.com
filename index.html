@@ -10,7 +10,7 @@
   <meta property="og:title" content="ORLANDO OUTLET — Yeni Nesil Alışveriş Deneyimi" />
   <meta property="og:description" content="Gerçek zamanlı outlet fırsatları. Stripe ile ödeme, Türkiye’ye 10–15 gün teslim." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="/hero.jpg" />
+  <meta property="og:image" content="/hero.jpg.JPG" />
   <meta name="theme-color" content="#111111" />
 
   <!-- Font -->
@@ -35,7 +35,8 @@
       min-height:100vh;width:100vw;margin-left:50%;transform:translateX(-50%);
       position:relative;display:grid;align-items:center;
     }
-    .hero-bg{position:absolute;inset:0;background:url("hero.jpg") center/cover no-repeat;filter:contrast(1.03) saturate(1.02);z-index:0;}
+    /* -> yeni görsel adı */
+    .hero-bg{position:absolute;inset:0;background:url("hero.jpg.JPG") center/cover no-repeat;filter:contrast(1.03) saturate(1.02);z-index:0;}
     .hero-overlay{position:absolute;inset:0;z-index:1;
       background:linear-gradient(to bottom, rgba(255,255,255,.06) 0%, rgba(255,255,255,.48) 70%, #fff 100%);
     }
@@ -67,16 +68,14 @@
     .btn{padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:var(--shadow);background:#fff;border:1px solid #e5e7eb;transition:.2s transform;}
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:#111;color:#fff;border-color:#111}
-    /* Açıklama satırı: beyaz + gölge (opsiyonel cam plaka yorumda) */
+    /* Açıklama satırı: siyah + hafif cam plaka */
     .lede{
-      color:#fff;
-      text-shadow:0 2px 8px rgba(0,0,0,.55);
-      /* Cam plaka istersen aç:
-      background:rgba(0,0,0,.35);
-      backdrop-filter:blur(4px);
-      border:1px solid rgba(255,255,255,.18);
+      color:#111;
+      text-shadow:0 1px 0 rgba(255,255,255,.35);
+      background:rgba(255,255,255,.58);
+      backdrop-filter:blur(2px);
+      border:1px solid rgba(0,0,0,.06);
       padding:10px 12px; border-radius:12px; display:inline-block;
-      */
       max-width:900px;margin:6px auto 0;font-size:clamp(15px,2vw,18px);
     }
 
@@ -100,7 +99,7 @@
     .card a.buy{position:absolute;inset:0;opacity:0;transition:.2s;background:rgba(0,0,0,.0)}
     .card:hover a.buy{opacity:1;background:rgba(0,0,0,.06)}
 
-    /* ------------- BRANDS (opsiyonel) ------------- */
+    /* ------------- BRANDS (dinamik) ------------- */
     .brands{background:#fff;border:1px solid #eee;border-radius:18px;padding:14px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
     .brands img{width:100%;height:38px;object-fit:contain;filter:grayscale(100%)}
 
@@ -160,15 +159,8 @@
       </article>
     </section>
 
-    <!-- Markalar şeridi (istersen görsellerini ekle) -->
-    <div class="brands" aria-hidden="true">
-      <img src="brands/lv.png" alt="">
-      <img src="brands/coach.png" alt="">
-      <img src="brands/mk.png" alt="">
-      <img src="brands/tory.png" alt="">
-      <img src="brands/nike.png" alt="">
-      <img src="brands/ralph.png" alt="">
-    </div>
+    <!-- Markalar şeridi -->
+    <div class="brands" id="brands" aria-label="Markalar"></div>
   </main>
 
   <!-- FOOTER -->
@@ -189,8 +181,25 @@
   </footer>
 
   <script>
-    /* ====== AYAR: Google Sheet CSV URL (DEMO VERİ YÜKLÜ) ====== */
-    const SHEET_CSV_URL = "data:text/csv;charset=utf-8,sku%2Ctitle%2Cbrand%2Cprice%2Cimage%2Cpayment_link%2Cstatus%0ASKU1%2CCoach%20Tabby%2026%2CCoach%2C229%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_ABC%2Cactive%0ASKU2%2CNike%20Air%20Force%201%2CNike%2C129%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_DEF%2Cactive";
+    /* ====== AYARLAR ====== */
+
+    /* DEMO: Google Sheet CSV URL (sonra gerçek Sheet ile değiştir) */
+    const SHEET_CSV_URL =
+      "data:text/csv;charset=utf-8,sku%2Ctitle%2Cbrand%2Cprice%2Cimage%2Cpayment_link%2Cstatus%0ASKU1%2CCoach%20Tabby%2026%2CCoach%2C229%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_ABC%2Cactive%0ASKU2%2CNike%20Air%20Force%201%2CNike%2C129%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_DEF%2Cactive";
+
+    /* Markalar: dosyalar /brands klasöründeyse aşağıdaki yollar doğru */
+    const BRANDS_FILES = [
+      "brands/coach.png",
+      "brands/michael-kors.png",
+      "brands/tory-burch.png",
+      "brands/marc-jacobs.png",
+      "brands/dkny.png",
+      "brands/karl-lagerfeld.png",
+      "brands/columbia.png",
+      "brands/north-face.png",
+      "brands/new-balance.png",
+      "brands/nike-factory.png"
+    ];
 
     /* Parallax (isteğe göre hız 0.1–0.3) */
     const PARALLAX_SPEED = 0.2;
@@ -254,24 +263,31 @@
       `;
     }
 
+    function renderBrands(){
+      const wrap = document.getElementById('brands');
+      wrap.innerHTML = BRANDS_FILES.map(src => `<img src="${src}" alt="">`).join('');
+    }
+
     async function render(){
       const grid = document.getElementById('grid');
       try{
-        if(!SHEET_CSV_URL){
-          grid.innerHTML = `
-            <article class="card"><div class="media"><img src="logo.png" alt="Logo" style="object-fit:contain;opacity:.3"></div>
-            <div class="body"><div class="title">CSV URL gerekli</div><div class="brand">Google Sheet’i “Publish to web (CSV)” yapıp linki koda ekle.</div><div class="price">—</div>
-            <div class="actions"><span class="chip">Adım 1: Stripe Link</span><span class="chip fill">Adım 2: CSV</span></div></div></article>`;
-          return;
-        }
         const items = await fetchCSV(SHEET_CSV_URL);
-        const active = items.filter(x => (x.status||'').toLowerCase()==='active');
+        let active = items.filter(x => (x.status||'').toLowerCase()==='active');
+
+        /* 12 karta tamamla */
+        const TARGET = 12;
+        if(active.length && active.length < TARGET){
+          const fill = [];
+          for(let i=0; i<TARGET; i++){ fill.push(active[i % active.length]); }
+          active = fill;
+        }
+
         if(!active.length){
           grid.innerHTML = `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div><div class="body">
           <div class="title">Aktif ürün yok</div><div class="brand">Sheet’te status=active olan satır ekleyin.</div><div class="price">—</div></div></article>`;
-          return;
+        } else {
+          grid.innerHTML = active.slice(0, TARGET).map(cardTemplate).join('');
         }
-        grid.innerHTML = active.slice(0,48).map(cardTemplate).join('');
       }catch(e){
         console.error(e);
         const msg = (e && e.message) ? e.message : 'Bilinmeyen hata';
@@ -279,6 +295,7 @@
           <article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div>
           <div class="body"><div class="title">Liste yüklenemedi</div><div class="brand">${msg}</div><div class="price">—</div></div></article>`;
       }
+      renderBrands();
     }
     render();
   </script>
