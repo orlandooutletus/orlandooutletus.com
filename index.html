@@ -30,7 +30,12 @@
       min-height:74vh; display:grid; place-items:center; text-align:center;
       position:relative; z-index:2; padding:72px 16px;
     }
-    .hero small{letter-spacing:.25em; color:#f6c32e; font-weight:600 !important;}
+    .hero small {
+  letter-spacing:.25em;
+  color:#f6c32e !important;
+  font-weight:600 !important;
+  text-shadow:0 0 3px rgba(0,0,0,.25);
+}
     .hero h1{margin:.4rem 0 1rem; font-size:clamp(28px,4vw,44px); line-height:1.1; font-weight:700;}
     .hero p{color:#374151; max-width:820px; margin:0 auto 20px; font-size:clamp(15px,2vw,18px)}
     .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
@@ -60,7 +65,7 @@
     rgba(255,255,255,.25) 55%,
     #fff 100%
   );
-  z-index:1;
+  z-index:2;
 }
     /* SECTION title */
     .section-title{font-size:22px; font-weight:700; margin:10px 0 6px}
