@@ -35,19 +35,29 @@
       min-height:100vh;width:100vw;margin-left:50%;transform:translateX(-50%);
       position:relative;display:grid;align-items:center;
     }
-    /* yeni görsel adı */
-    .hero-bg{position:absolute;inset:0;background:url("hero.jpg.JPG") center/cover no-repeat;filter:contrast(1.03) saturate(1.02);z-index:0;}
-    .hero-overlay{position:absolute;inset:0;z-index:1;
-      /* alttan beyaza daha hafif geçiş */
-      background:linear-gradient(to bottom, rgba(255,255,255,.00) 0%, rgba(255,255,255,.22) 70%, #fff 100%);
+    /* hero görseli */
+    .hero-bg{
+      position:absolute;inset:0;
+      background:url("hero.jpg.JPG") center/cover no-repeat;
+      filter:contrast(1.03) saturate(1.02);
+      z-index:0;
     }
-    /* Metinleri her zeminde okunur yapan, fakat fotoğrafı öldürmeyen scrim */
+
+    /* Daha hafif overlay (fotoğrafı göstermeye odaklı) */
+    .hero-overlay{
+      position:absolute;inset:0;z-index:1;
+      /* üst kısım tamamen şeffaf, altta çok hafif beyaza geçiş */
+      background:linear-gradient(to bottom,
+                  rgba(255,255,255,0) 0%,
+                  rgba(255,255,255,0.12) 70%,   /* ← istersen 0.08–0.16 arası oynatılabilir */
+                  rgba(255,255,255,0.85) 100%);
+    }
+    /* Noktasal scrim: metin alanını biraz koyulaştırır (çok hafif) */
     .hero-overlay::after{
-      content:"";
-      position:absolute; inset:0; pointer-events:none;
-      background:radial-gradient(ellipse 90% 60% at 50% 40%,
-                rgba(0,0,0,.28) 0%,
-                rgba(0,0,0,.18) 35%,
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(ellipse 88% 58% at 50% 40%,
+                rgba(0,0,0,0.12) 0%,   /* ← istersen 0.10–0.18 arası ayarlanabilir */
+                rgba(0,0,0,0.06) 35%,
                 rgba(0,0,0,0) 60%);
     }
 
@@ -56,27 +66,23 @@
     .brand-mark{width:48px;height:48px;border-radius:999px;background:#111 url("logo.png") center/70% no-repeat; box-shadow:var(--shadow);}
     .site-title{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:.02em;}
     .site-pill{display:inline-block;padding:10px 18px;background:#111;color:#fff;border-radius:999px;font-weight:700;box-shadow:var(--shadow);}
-    /* Eyebrow: cam görünümlü pill */
     .eyebrow{
-      color:#fff !important;
-      background:rgba(0,0,0,.45);
-      padding:6px 10px; border-radius:999px;
-      box-shadow:0 4px 14px rgba(0,0,0,.25);
-      letter-spacing:.18em; text-transform:uppercase; font-weight:600; font-size:.95rem; margin-top:8px;
+      color:#fff !important;background:rgba(0,0,0,.45);
+      padding:6px 10px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);
+      letter-spacing:.18em;text-transform:uppercase;font-weight:600;font-size:.95rem;margin-top:8px;
     }
     .hero h1{margin:.2rem 0 .6rem;line-height:1.05;font-weight:800;font-size:clamp(28px,5vw,56px);text-shadow:0 1px 3px rgba(0,0,0,.12);}
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:6px 0 8px;}
     .btn{padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:var(--shadow);background:#fff;border:1px solid #e5e7eb;transition:.2s transform;}
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:#111;color:#fff;border-color:#111}
+
     /* Açıklama: siyah metin + hafif cam plaka */
     .lede{
-      color:#111;
-      text-shadow:0 1px 0 rgba(255,255,255,.35);
-      background:rgba(255,255,255,.58);
-      backdrop-filter:blur(2px);
+      color:#111;text-shadow:0 1px 0 rgba(255,255,255,.35);
+      background:rgba(255,255,255,.58); backdrop-filter:blur(2px);
       border:1px solid rgba(0,0,0,.06);
-      padding:10px 12px; border-radius:12px; display:inline-block;
+      padding:10px 12px;border-radius:12px;display:inline-block;
       max-width:900px;margin:6px auto 0;font-size:clamp(15px,2vw,18px);
     }
 
@@ -188,18 +194,10 @@
     const SHEET_CSV_URL =
       "data:text/csv;charset=utf-8,sku%2Ctitle%2Cbrand%2Cprice%2Cimage%2Cpayment_link%2Cstatus%0ASKU1%2CCoach%20Tabby%2026%2CCoach%2C229%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_ABC%2Cactive%0ASKU2%2CNike%20Air%20Force%201%2CNike%2C129%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_DEF%2Cactive";
 
-    /* Markalar: dosyalar kök dizinde */
+    /* Markalar: kök dizin */
     const BRANDS_FILES = [
-      "coach.png",
-      "michael-kors.png",
-      "tory-burch.png",
-      "marc-jacobs.png",
-      "dkny.png",
-      "karl-lagerfeld.png",
-      "columbia.png",
-      "north-face.png",
-      "new-balance.png",
-      "nike-factory.png"
+      "coach.png","michael-kors.png","tory-burch.png","marc-jacobs.png","dkny.png",
+      "karl-lagerfeld.png","columbia.png","north-face.png","new-balance.png","nike-factory.png"
     ];
 
     /* Parallax (isteğe göre hız 0.1–0.3) */
@@ -219,24 +217,17 @@
     }
 
     function parseCSV(text){
-      // basit CSV parser (tırnak ve virgül kaçışlarını temel destekler)
       const rows=[]; let cur='', row=[], q=false;
       for(let i=0;i<text.length;i++){
         const c=text[i], n=text[i+1];
-        if(c==='\"'){
-          if(q && n==='\"'){cur+='\"'; i++}
-          else q=!q;
-        } else if(c===',' && !q){
-          row.push(cur.trim()); cur='';
-        } else if((c==='\n'||c==='\r') && !q){
-          if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); row=[]; cur=''; }
-        } else cur+=c;
+        if(c==='\"'){ if(q && n==='\"'){cur+='\"'; i++} else q=!q; }
+        else if(c===',' && !q){ row.push(cur.trim()); cur=''; }
+        else if((c==='\n'||c==='\r') && !q){ if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); row=[]; cur=''; } }
+        else cur+=c;
       }
       if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); }
       const header = rows.shift().map(h=>h.toLowerCase());
-      return rows.map(cols=>{
-        const o={}; header.forEach((h,i)=>o[h]=cols[i]||''); return o;
-      });
+      return rows.map(cols=>{ const o={}; header.forEach((h,i)=>o[h]=cols[i]||''); return o; });
     }
 
     function cardTemplate(item){
@@ -246,7 +237,6 @@
       const img = item.image || 'logo.png';
       const link = item.payment_link || '#';
       const ariaTitle = `${brand?brand+' ':''}${title}`.trim();
-
       return `
         <article class="card">
           <div class="media"><img src="${img}" alt="${ariaTitle}"></div>
@@ -278,23 +268,21 @@
         /* 12 karta tamamla */
         const TARGET = 12;
         if(active.length && active.length < TARGET){
-          const fill = [];
-          for(let i=0; i<TARGET; i++){ fill.push(active[i % active.length]); }
+          const fill = []; for(let i=0;i<TARGET;i++){ fill.push(active[i % active.length]); }
           active = fill;
         }
 
-        if(!active.length){
-          grid.innerHTML = `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div><div class="body">
-          <div class="title">Aktif ürün yok</div><div class="brand">Sheet’te status=active olan satır ekleyin.</div><div class="price">—</div></div></article>`;
-        } else {
-          grid.innerHTML = active.slice(0, TARGET).map(cardTemplate).join('');
-        }
+        grid.innerHTML = active.length
+          ? active.slice(0, TARGET).map(cardTemplate).join('')
+          : `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div><div class="body">
+               <div class="title">Aktif ürün yok</div><div class="brand">Sheet’te status=active olan satır ekleyin.</div><div class="price">—</div>
+             </div></article>`;
       }catch(e){
         console.error(e);
         const msg = (e && e.message) ? e.message : 'Bilinmeyen hata';
-        document.getElementById('grid').innerHTML = `
-          <article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div>
-          <div class="body"><div class="title">Liste yüklenemedi</div><div class="brand">${msg}</div><div class="price">—</div></div></article>`;
+        document.getElementById('grid').innerHTML =
+          `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div>
+            <div class="body"><div class="title">Liste yüklenemedi</div><div class="brand">${msg}</div><div class="price">—</div></div></article>`;
       }
       renderBrands();
     }
