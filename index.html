@@ -1,98 +1,285 @@
-<!-- 🔹 Sadece ilgili kısım değişti: cardTemplate() fonksiyonundaki DM linki -->
-<script>
-  /* ====== AYARLAR ====== */
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ORLANDO OUTLET — Yeni Nesil Alışveriş Deneyimi</title>
 
-  const SHEET_CSV_URL =
-    "data:text/csv;charset=utf-8,sku%2Ctitle%2Cbrand%2Cprice%2Cimage%2Cpayment_link%2Cstatus%0ASKU1%2CCoach%20Tabby%2026%2CCoach%2C229%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_ABC%2Cactive%0ASKU2%2CNike%20Air%20Force%201%2CNike%2C129%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_DEF%2Cactive";
+  <!-- SEO / Share -->
+  <meta name="description" content="Instagram’daki anlık outlet fırsatlarını tek sayfada listeleyip Stripe ile güvenli ödeme alın. ABD→Türkiye 10–15 günde kapı teslim." />
+  <meta property="og:title" content="ORLANDO OUTLET — Yeni Nesil Alışveriş Deneyimi" />
+  <meta property="og:description" content="Gerçek zamanlı outlet fırsatları. Stripe ile ödeme, Türkiye’ye 10–15 gün teslim." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/bebek%20arabal%C4%B1%20hero.JPG" />
+  <meta name="theme-color" content="#111111" />
 
-  const BRANDS_FILES = [
-    "coach.png","michael-kors.png","tory-burch.png","marc-jacobs.png","dkny.png",
-    "karl-lagerfeld.png","columbia.png","north-face.png","new-balance.png","nike-factory.png"
-  ];
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  const INSTAGRAM_URL = "https://www.instagram.com/orlandooutlet/";
-
-  const PARALLAX_SPEED = 0.2;
-  const heroBg = document.getElementById('heroParallax');
-  window.addEventListener('scroll', ()=> {
-    const y = window.scrollY * PARALLAX_SPEED;
-    heroBg.style.transform = `translateY(${y}px)`;
-  }, {passive:true});
-
-  async function fetchCSV(url){
-    const res = await fetch(url, {cache:"no-store"});
-    if(!res.ok) throw new Error("CSV erişilemedi");
-    const text = await res.text();
-    return parseCSV(text);
-  }
-
-  function parseCSV(text){
-    const rows=[]; let cur='', row=[], q=false;
-    for(let i=0;i<text.length;i++){
-      const c=text[i], n=text[i+1];
-      if(c==='\"'){ if(q && n==='\"'){cur+='\"'; i++} else q=!q; }
-      else if(c===',' && !q){ row.push(cur.trim()); cur=''; }
-      else if((c==='\n'||c==='\r') && !q){ if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); row=[]; cur=''; } }
-      else cur+=c;
+  <style>
+    :root{
+      --bg:#f1f1f1; --white:#fff; --text:#121212; --muted:#6b7280;
+      --radius:22px; --shadow:0 10px 28px rgba(0,0,0,.08); --accent:#f6c32e;
+      --maxw:1120px;
     }
-    if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); }
-    const header = rows.shift().map(h=>h.toLowerCase());
-    return rows.map(cols=>{ const o={}; header.forEach((h,i)=>o[h]=cols[i]||''); return o; });
-  }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:"Prompt",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:var(--bg)}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:var(--maxw);margin:0 auto;padding:24px}
 
-  /* 🔹 DM butonu artık Instagram sayfasına yönlendiriyor */
-  function cardTemplate(item){
-    const title = item.title || '—';
-    const brand = item.brand || '';
-    const price = item.price ? `$${item.price}` : '';
-    const img = item.image || 'logo.png';
-    const link = item.payment_link || '#';
-    const ariaTitle = `${brand?brand+' ':''}${title}`.trim();
-    return `
-      <article class="card">
-        <div class="media"><img src="${img}" alt="${ariaTitle}"></div>
-        <div class="body">
-          <div class="title">${title}</div>
-          <div class="brand">${brand}</div>
-          <div class="price">${price}</div>
-          <div class="actions">
-            <a class="chip" href="${INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="${title} için DM'den yaz">DM</a>
-            <a class="chip fill" href="${link}" target="_blank" rel="noopener" aria-label="${title} için Stripe ile satın al">Hemen Satın Al</a>
-          </div>
+    /* ------------- HERO ------------- */
+    .hero-wrap{
+      min-height:100vh; width:100vw; margin-left:50%; transform:translateX(-50%);
+      position:relative; display:grid;
+      /* üst 1/3 + alt 2/3 bölgesi; metinler üst bölgede */
+      grid-template-rows: 1fr 2fr;
+      padding-top:clamp(12px, 2vh, 24px);
+    }
+    .hero-bg{
+      position:absolute; inset:0;
+      /* Dosya adı boşluk ve 'ı' içeriyor: URL-encode kullanıyoruz */
+      background:url("bebek%20arabal%C4%B1%20hero.JPG") center top/cover no-repeat;
+      filter:contrast(1.03) saturate(1.02);
+      z-index:0;
+    }
+
+    .hero{position:relative; z-index:2; grid-row:1; align-self:center;}
+    .hero .inner{
+      max-width:var(--maxw); margin:0 auto; padding:0 24px;
+      text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px;
+      padding-top:clamp(12px,2vh,24px);
+      padding-bottom:clamp(12px,2vh,24px);
+    }
+
+    .brand-mark{width:48px;height:48px;border-radius:999px;background:#111 url("logo.png") center/70% no-repeat; box-shadow:var(--shadow);}
+    .site-title{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:.02em;}
+    .site-pill{display:inline-block;padding:10px 18px;background:#111;color:#fff;border-radius:999px;font-weight:700;box-shadow:var(--shadow);}
+    .eyebrow{
+      color:#fff !important; background:rgba(0,0,0,.45);
+      padding:6px 10px; border-radius:999px; box-shadow:0 4px 14px rgba(0,0,0,.25);
+      letter-spacing:.18em; text-transform:uppercase; font-weight:600; font-size:.95rem; margin-top:8px;
+    }
+    .hero h1{margin:.2rem 0 .6rem; line-height:1.05; font-weight:800; font-size:clamp(28px,5vw,56px); text-shadow:0 1px 3px rgba(0,0,0,.12);}
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:6px 0 8px;}
+    .btn{padding:12px 18px; border-radius:999px; font-weight:700; box-shadow:var(--shadow); background:#fff; border:1px solid #e5e7eb; transition:.2s transform;}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:#111; color:#fff; border-color:#111}
+
+    .lede{
+      color:#111; text-shadow:0 1px 0 rgba(255,255,255,.28);
+      background:rgba(255,255,255,.45); backdrop-filter:blur(1.2px);
+      border:1px solid rgba(0,0,0,.05);
+      padding:10px 12px; border-radius:12px; display:inline-block;
+      max-width:900px; margin:6px auto 0; font-size:clamp(15px,2vw,18px);
+    }
+
+    @media (max-width: 768px){
+      .hero-wrap{ grid-template-rows: 1.2fr 1.8fr; }
+      .hero .inner{ padding-top:max(24px, 4vh); padding-bottom:max(16px, 3vh); }
+      .hero h1{ font-size:clamp(26px,7vw,44px); }
+    }
+
+    /* ------------- GRID ------------- */
+    .section-title{text-align:center;font-size:clamp(22px,3vw,32px);margin:48px 0 20px;font-weight:800;letter-spacing:.01em}
+    .grid{display:grid;gap:22px;grid-template-columns:repeat(4,minmax(0,1fr))}
+    @media (max-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}}
+
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative}
+    .card .media{background:#111;aspect-ratio:1/1;display:grid;place-items:center}
+    .card .media img{width:100%;height:100%;object-fit:cover}
+    .card .body{padding:16px 16px 18px}
+    .title{font-weight:800;margin-bottom:6px;font-size:15px}
+    .brand{color:#4b5563;font-size:13px}
+    .price{margin:10px 0 14px;font-weight:800}
+    .actions{display:flex;gap:10px}
+    .chip{padding:10px 14px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer}
+    .chip.fill{background:#111;color:#fff;border-color:#111}
+    .card a.buy{position:absolute;inset:0;opacity:0;transition:.2s;background:rgba(0,0,0,.0)}
+    .card:hover a.buy{opacity:1;background:rgba(0,0,0,.06)}
+
+    /* ------------- BRANDS ------------- */
+    .brands{background:#fff;border:1px solid #eee;border-radius:18px;padding:14px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+    .brands img{width:100%;height:38px;object-fit:contain;filter:grayscale(100%)}
+
+    /* ------------- FOOTER ------------- */
+    footer{background:#eaeaea;margin-top:52px}
+    .foot{max-width:var(--maxw);margin:0 auto;padding:28px 24px}
+    .foot h3{text-align:center;margin:0 0 18px;font-weight:800}
+    .foot .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .foot p{margin:0;color:#334155;text-align:center}
+    .foot .copy{margin-top:18px;text-align:center;color:#374151}
+    .muted{color:#6b7280}
+  </style>
+</head>
+<body>
+
+  <!-- HERO (metinler üst 1/3 dilimde, çatıya değmez) -->
+  <section class="hero-wrap" aria-label="Tanıtım">
+    <div class="hero-bg" id="heroParallax"></div>
+
+    <div class="hero">
+      <div class="inner">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="site-title">ORLANDO OUTLET</div>
+        <div class="site-pill">Yeni Nesil Alışveriş Deneyimi</div>
+        <span class="eyebrow">LIVE FROM ORLANDO PREMIUM OUTLETS</span>
+        <h1>Hızlı, Güvenli, Canlı Yayında Alışveriş</h1>
+
+        <div class="cta-row" role="group" aria-label="Hızlı bağlantılar">
+          <a class="btn primary" href="https://www.instagram.com/orlandooutlet/" target="_blank" rel="noopener">Instagram DM’den Yaz</a>
+          <a class="btn" href="mailto:info@orlandooutletus.com">info@orlandooutletus.com</a>
+          <a class="btn" href="#grid">Ürünleri Gör</a>
         </div>
-        <a class="buy" href="${link}" target="_blank" rel="noopener" aria-label="${title} satın al"></a>
+
+        <p class="lede">
+          Ürünü seç, Stripe güvenli ödeme linkiyle öde; hemen satın alalım.<br>
+          <strong>10–15 günde Türkiye Kapı Teslim.</strong> Stok tutmuyoruz — anlık fırsatlarla çalışıyoruz.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GÜNÜN FIRSATLARI -->
+  <main class="container">
+    <h2 class="section-title">Günün Fırsatları</h2>
+
+    <section id="grid" class="grid" aria-label="Ürün listesi">
+      <!-- CSV yüklenene kadar placeholder -->
+      <article class="card" aria-busy="true">
+        <div class="media"><img src="logo.png" alt="Yükleniyor" style="object-fit:contain;opacity:.3"></div>
+        <div class="body">
+          <div class="title muted">Yükleniyor…</div>
+          <div class="brand muted">Lütfen bekleyin</div>
+          <div class="price muted">—</div>
+          <div class="actions"><span class="chip">Sepete Ekle</span><span class="chip fill">Hemen Satın Al</span></div>
+        </div>
       </article>
-    `;
-  }
+    </section>
 
-  function renderBrands(){
-    const wrap = document.getElementById('brands');
-    wrap.innerHTML = BRANDS_FILES.map(src => `<img src="${src}" alt="">`).join('');
-  }
+    <!-- Markalar şeridi -->
+    <div class="brands" id="brands" aria-label="Markalar"></div>
+  </main>
 
-  async function render(){
-    const grid = document.getElementById('grid');
-    try{
-      const items = await fetchCSV(SHEET_CSV_URL);
-      let active = items.filter(x => (x.status||'').toLowerCase()==='active');
-      const TARGET = 12;
-      if(active.length && active.length < TARGET){
-        const fill = []; for(let i=0;i<TARGET;i++){ fill.push(active[i % active.length]); }
-        active = fill;
-      }
-      grid.innerHTML = active.length
-        ? active.slice(0, TARGET).map(cardTemplate).join('')
-        : `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div><div class="body">
-             <div class="title">Aktif ürün yok</div><div class="brand">Sheet’te status=active olan satır ekleyin.</div><div class="price">—</div>
-           </div></article>`;
-    }catch(e){
-      console.error(e);
-      const msg = (e && e.message) ? e.message : 'Bilinmeyen hata';
-      document.getElementById('grid').innerHTML =
-        `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div>
-          <div class="body"><div class="title">Liste yüklenemedi</div><div class="brand">${msg}</div><div class="price">—</div></div></article>`;
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot">
+      <h3>Önemli Bilgilendirme</h3>
+      <div class="cols" role="list">
+        <p role="listitem"><strong>İade / Değişim</strong><br/>İade ve değişim yoktur. Satın alma öncesi fiyat/ölçü/renk teyidi DM’den yapılır.</p>
+        <p role="listitem"><strong>Gizlilik</strong><br/>Ödemeler Stripe ile güvenli şekilde alınır. Kişisel veriler yalnızca sipariş ve teslimat için kullanılır.</p>
+        <p role="listitem"><strong>Gönderim</strong><br/>Ortalama teslimat süresi 10–15 gündür.</p>
+      </div>
+      <p class="copy">
+        Instagram: <a href="https://www.instagram.com/orlandooutlet/" target="_blank" rel="noopener">@orlandooutlet</a><br/>
+        © ORLANDOOUTLET — Orlando, FL · Türkiye’ye 10–15 günde teslim ·
+        <a href="#">İade/Değişim Yoktur</a> · <a href="#">Gizlilik</a> · <a href="#">Çerezler</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    /* ====== AYARLAR ====== */
+    const SHEET_CSV_URL =
+      "data:text/csv;charset=utf-8,sku%2Ctitle%2Cbrand%2Cprice%2Cimage%2Cpayment_link%2Cstatus%0ASKU1%2CCoach%20Tabby%2026%2CCoach%2C229%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_ABC%2Cactive%0ASKU2%2CNike%20Air%20Force%201%2CNike%2C129%2Clogo.png%2Chttps%3A%2F%2Fbuy.stripe.com%2Ftest_DEF%2Cactive";
+
+    const BRANDS_FILES = [
+      "coach.png","michael-kors.png","tory-burch.png","marc-jacobs.png","dkny.png",
+      "karl-lagerfeld.png","columbia.png","north-face.png","new-balance.png","nike-factory.png"
+    ];
+
+    const INSTAGRAM_URL = "https://www.instagram.com/orlandooutlet/";
+    const PARALLAX_SPEED = 0.2;
+
+    const heroBg = document.getElementById('heroParallax');
+    window.addEventListener('scroll', ()=> {
+      const y = window.scrollY * PARALLAX_SPEED;
+      heroBg.style.transform = `translateY(${y}px)`;
+    }, {passive:true});
+
+    async function fetchCSV(url){
+      const res = await fetch(url, {cache:"no-store"});
+      if(!res.ok) throw new Error("CSV erişilemedi");
+      const text = await res.text();
+      return parseCSV(text);
     }
-    renderBrands();
-  }
-  render();
-</script>
+
+    function parseCSV(text){
+      const rows=[]; let cur='', row=[], q=false;
+      for(let i=0;i<text.length;i++){
+        const c=text[i], n=text[i+1];
+        if(c==='\"'){ if(q && n==='\"'){cur+='\"'; i++} else q=!q; }
+        else if(c===',' && !q){ row.push(cur.trim()); cur=''; }
+        else if((c==='\n'||c==='\r') && !q){ if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); row=[]; cur=''; } }
+        else cur+=c;
+      }
+      if(cur.length||row.length){ row.push(cur.trim()); rows.push(row); }
+      const header = rows.shift().map(h=>h.toLowerCase());
+      return rows.map(cols=>{ const o={}; header.forEach((h,i)=>o[h]=cols[i]||''); return o; });
+    }
+
+    /* Kart şablonu: DM → Instagram, Satın Al → Stripe */
+    function cardTemplate(item){
+      const title = item.title || '—';
+      const brand = item.brand || '';
+      const price = item.price ? `$${item.price}` : '';
+      const img = item.image || 'logo.png';
+      const link = item.payment_link || '#';
+      const ariaTitle = `${brand?brand+' ':''}${title}`.trim();
+      return `
+        <article class="card">
+          <div class="media"><img src="${img}" alt="${ariaTitle}"></div>
+          <div class="body">
+            <div class="title">${title}</div>
+            <div class="brand">${brand}</div>
+            <div class="price">${price}</div>
+            <div class="actions">
+              <a class="chip" href="${INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="${title} için DM'den yaz">DM</a>
+              <a class="chip fill" href="${link}" target="_blank" rel="noopener" aria-label="${title} için Stripe ile satın al">Hemen Satın Al</a>
+            </div>
+          </div>
+          <a class="buy" href="${link}" target="_blank" rel="noopener" aria-label="${title} satın al"></a>
+        </article>
+      `;
+    }
+
+    function renderBrands(){
+      const wrap = document.getElementById('brands');
+      wrap.innerHTML = BRANDS_FILES.map(src => `<img src="${src}" alt="">`).join('');
+    }
+
+    async function render(){
+      const grid = document.getElementById('grid');
+      try{
+        const items = await fetchCSV(SHEET_CSV_URL);
+        let active = items.filter(x => (x.status||'').toLowerCase()==='active');
+
+        /* 12 karta tamamla */
+        const TARGET = 12;
+        if(active.length && active.length < TARGET){
+          const fill = []; for(let i=0;i<TARGET;i++){ fill.push(active[i % active.length]); }
+          active = fill;
+        }
+
+        grid.innerHTML = active.length
+          ? active.slice(0, TARGET).map(cardTemplate).join('')
+          : `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div><div class="body">
+               <div class="title">Aktif ürün yok</div><div class="brand">Sheet’te status=active olan satır ekleyin.</div><div class="price">—</div>
+             </div></article>`;
+      }catch(e){
+        console.error(e);
+        const msg = (e && e.message) ? e.message : 'Bilinmeyen hata';
+        document.getElementById('grid').innerHTML =
+          `<article class="card"><div class="media"><img src="logo.png" alt="" style="object-fit:contain;opacity:.3"></div>
+            <div class="body"><div class="title">Liste yüklenemedi</div><div class="brand">${msg}</div><div class="price">—</div></div></article>`;
+      }
+      renderBrands();
+    }
+    render();
+  </script>
+</body>
+</html>
