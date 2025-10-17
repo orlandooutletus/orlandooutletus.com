@@ -172,138 +172,30 @@
 <body>
 
   <!-- HERO -->
-/* === HERO (responsive + mobilde görselsiz) === */
-.hero-wrap{
-  position: relative;
-  overflow: hidden;
-  background: #ffffff; /* Mobil varsayılan zemin */
-  color: #0b0b0b;
-}
+<section class="hero-wrap" aria-label="Tanıtım">
+  <div class="hero-bg" id="heroParallax"></div>
 
-.hero-bg{
-  position: absolute;
-  inset: 0;
-  background: url("hero.jpg") center / cover no-repeat; /* görsel yolunu değiştir */
-  will-change: transform;
-  transform: translateZ(0);
-  pointer-events: none;
-}
+  <div class="hero">
+    <div class="inner">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div class="site-title">ORLANDO OUTLET</div>
+      <div class="site-pill">Yeni Nesil Alışveriş Deneyimi</div>
+      <span class="eyebrow">LIVE FROM ORLANDO PREMIUM OUTLETS</span>
+      <h1>Hızlı, Güvenli, Canlı Yayında Alışveriş</h1>
 
-/* İçerik alanı */
-.hero{
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 64vh; /* masaüstünde ferah yükseklik */
-}
+      <div class="cta-row" role="group" aria-label="Hızlı bağlantılar">
+        <a class="btn primary" href="https://www.instagram.com/orlandooutlet/" target="_blank" rel="noopener">Instagram DM’den Yaz</a>
+        <a class="btn" href="mailto:info@orlandooutletus.com">info@orlandooutletus.com</a>
+        <a class="btn" href="#grid">Ürünleri Gör</a>
+      </div>
 
-.hero .inner{
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: clamp(28px, 5vw, 80px) 20px;
-}
-
-.brand-mark{ display:none; } /* varsa logolu marka işareti için ayrı stil verilebilir */
-
-.site-title{
-  font-weight: 800;
-  letter-spacing: .08em;
-  font-size: clamp(20px, 2.4vw, 28px);
-}
-
-.site-pill{
-  display: inline-block;
-  margin-top: 10px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #f4f4f4;
-  font-size: 14px;
-}
-
-.eyebrow{
-  display: inline-block;
-  margin-top: 14px;
-  letter-spacing: .12em;
-  font-size: 12px;
-  opacity: .8;
-}
-
-.hero h1{
-  margin: 10px 0 14px;
-  line-height: 1.1;
-  font-size: clamp(26px, 5vw, 48px);
-  font-weight: 800;
-}
-
-.lede{
-  max-width: 720px;
-  font-size: clamp(14px, 1.6vw, 18px);
-  line-height: 1.6;
-  margin-top: 12px;
-}
-
-/* CTA butonları */
-.cta-row{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 14px 0 6px;
-}
-
-.btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid #e6e6e6;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
-  background: #fff;
-  color: #0b0b0b;
-}
-
-.btn:hover{ transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.06); }
-.btn.primary{
-  background: #111;
-  color: #fff;
-  border-color: #111;
-}
-.btn.primary:hover{
-  background: #000;
-}
-
-/* ===== Masaüstü iyileştirmeleri ===== */
-@media (min-width: 1025px){
-  /* Masaüstünde görseli aç, okunurluk için hafif degrade ekle */
-  .hero-bg{
-    display: block;
-  }
-  .hero-wrap::after{
-    content:"";
-    position: absolute; inset:0;
-    background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.15) 35%, rgba(255,255,255,.55) 100%);
-    pointer-events: none;
-  }
-}
-
-/* ===== Tablet kırılımı ===== */
-@media (min-width: 641px) and (max-width: 1024px){
-  .hero{ min-height: 56vh; }
-}
-
-/* ===== Mobil: hero görseli kapalı, metin net ===== */
-@media (max-width: 1024px){
-  .hero-bg{ display: none; }           /* İSTEDİĞİN GİBİ: mobil ve tabletlerde görsel KAPALI */
-  .hero{ min-height: unset; }
-  .cta-row .btn{ flex: 1 1 100%; }     /* Butonlar alt alta tam genişlik */
-}
-
-/* Hareket azaltmayı tercih eden kullanıcılar için */
-@media (prefers-reduced-motion: reduce){
-  .btn{ transition: none; }
-}
+      <p class="lede">
+        Ürünü seç, Stripe güvenli ödeme linkiyle öde; Hemen satın alalım.<br>
+        <strong>10–15 günde Türkiye Kapı Teslim.</strong> Stok Yok — ANLIK FIRSATLAR VAR
+      </p>
+    </div>
+  </div>
+</section>
 
 
   <!-- GÜNÜN FIRSATLARI -->
