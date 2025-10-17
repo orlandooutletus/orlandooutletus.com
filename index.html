@@ -172,30 +172,193 @@
 <body>
 
   <!-- HERO -->
-  <section class="hero-wrap" aria-label="Tanıtım">
-    <div class="hero-bg" id="heroParallax"></div>
+ /* =========================
+   HERO — Final (Desktop: sabit görsel + blok kayma)
+   Mobil/Tablet: görselsiz, metin net
+   ========================= */
 
-    <div class="hero">
-      <div class="inner">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="site-title">ORLANDO OUTLET</div>
-        <div class="site-pill">Yeni Nesil Alışveriş Deneyimi</div>
-        <span class="eyebrow">LIVE FROM ORLANDO PREMIUM OUTLETS</span>
-        <h1>Hızlı, Güvenli, Canlı Yayında Alışveriş</h1>
+/* (İsteğe bağlı) sayfa içi bağlantılara yumuşak kaydırma */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html { scroll-behavior: auto; }
+}
 
-        <div class="cta-row" role="group" aria-label="Hızlı bağlantılar">
-          <a class="btn primary" href="https://www.instagram.com/orlandooutlet/" target="_blank" rel="noopener">Instagram DM’den Yaz</a>
-          <a class="btn" href="mailto:info@orlandooutletus.com">info@orlandooutletus.com</a>
-          <a class="btn" href="#grid">Ürünleri Gör</a>
-        </div>
+/* Kapsayıcı */
+.hero-wrap{
+  position: relative;
+  overflow: hidden;
+  background: #fff;   /* Mobil varsayılan zemin */
+  color: #0b0b0b;
+}
 
-        <p class="lede">
-          Ürünü seç, Stripe güvenli ödeme linkiyle öde; Hemen satın alalım.<br>
-          <strong>10–15 günde Türkiye Kapı Teslim.</strong> Stok Yok — ANLIK FIRSATLAR VAR
-        </p>
-      </div>
-    </div>
-  </section>
+/* Arka plan görsel (desktop’ta sabitlenecek) */
+.hero-bg{
+  position: absolute;
+  inset: 0;
+  background: url("hero.jpg") center / cover no-repeat; /* ← kendi görsel yolunla değiştir */
+  pointer-events: none;
+  will-change: transform;
+  z-index: 0;
+}
+
+/* İç içerik alanı */
+.hero{
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 64vh; /* temel yükseklik (desktop özelinde aşağıda büyüteceğiz) */
+  z-index: 1;       /* metin görselin üstünde */
+}
+
+.hero .inner{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 80px) 20px;
+}
+
+/* Üst kimlik parçaları */
+.brand-mark{ display:none; } /* istersen daha sonra açarsın */
+
+.site-title{
+  font-weight: 800;
+  letter-spacing: .08em;
+  font-size: clamp(20px, 2.4vw, 28px);
+}
+
+.site-pill{
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f4f4f4;
+  font-size: 14px;
+}
+
+.eyebrow{
+  display: inline-block;
+  margin-top: 14px;
+  letter-spacing: .12em;
+  font-size: 12px;
+  opacity: .82;
+}
+
+/* Başlık ve lede */
+.hero h1{
+  margin: 10px 0 14px;
+  line-height: 1.1;
+  font-size: clamp(26px, 5vw, 48px);
+  font-weight: 800;
+}
+
+.lede{
+  max-width: 720px;
+  font-size: clamp(14px, 1.6vw, 18px);
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+/* CTA butonları */
+.cta-row{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 6px;
+}
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease, border-color .18s ease;
+  background: #fff;
+  color: #0b0b0b;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+}
+.btn.primary{
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.btn.primary:hover{
+  background: #000;
+}
+
+/* ===== Desktop: sabit arka plan + uzun sahne + blok halinde kayma ===== */
+@media (min-width: 1025px){
+
+  /* Arka planı sabitle (ekrana çivilenmiş gibi) */
+  .hero-bg{
+    position: fixed; /* kritik: kaydırırken fotoğraf sabit görünür */
+    inset: 0;
+    z-index: 0;
+    display: block;
+  }
+
+  /* Okunurluk için çok hafif transparan degrade örtüsü */
+  .hero-wrap::after{
+    content:"";
+    position: absolute; inset:0;
+    z-index: 0;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,.55) 0%,
+      rgba(255,255,255,.15) 35%,
+      rgba(255,255,255,.55) 100%);
+    pointer-events: none;
+  }
+
+  /* Sahneyi uzat (scroll hissi olsun) */
+  .hero{
+    min-height: 180vh; /* kaydırma alanı: yazılar blok halinde akacak */
+    z-index: 1;
+  }
+
+  /* Metin bloğunu sticky yap; sahnede akıcı dursun */
+  .hero .inner{
+    position: sticky;
+    top: 14vh;                 /* ekranın üstünden pay */
+    will-change: transform, opacity;
+  }
+
+  /* Destekliyorsa: Scroll-linked animasyon (Chromium/Safari modern) */
+  @supports (animation-timeline: view()){
+    .hero .inner{
+      animation-name: heroMove;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+    @keyframes heroMove{
+      0%   { transform: translateY(20vh); opacity: 0;   }
+      30%  { transform: translateY(0vh);  opacity: 1;   }
+      100% { transform: translateY(-12vh); opacity: .75; }
+    }
+  }
+}
+
+/* ===== Tablet kırılımı ===== */
+@media (min-width: 641px) and (max-width: 1024px){
+  .hero{ min-height: 56vh; }
+}
+
+/* ===== Mobil & Tablet: görsel kapalı, metin net ===== */
+@media (max-width: 1024px){
+  .hero-bg{ display: none; }        /* İstediğin gibi: mobil/tablette görsel yok */
+  .hero{ min-height: unset; }
+  .cta-row .btn{ flex: 1 1 100%; }  /* butonlar tam genişlik */
+}
+
+/* Hareket azaltmayı tercih eden kullanıcılar */
+@media (prefers-reduced-motion: reduce){
+  .btn{ transition: none; }
+}
+
 
   <!-- GÜNÜN FIRSATLARI -->
   <main class="container">
